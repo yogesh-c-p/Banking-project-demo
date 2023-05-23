@@ -1,0 +1,19 @@
+---
+- name: Configure Docker on test-server
+  hosts: prod-server
+  become: true
+  tasks :
+  - name: updating apt
+    command: sudo apt-get update
+
+  - name: Install Docker
+    command: sudo apt-get install -y docker.io
+
+  - name: Start Docker Service
+    command: sudo systemctl start docker
+
+  - name: To remove existing insure-me container
+    command: sudo docker rm -f my-banking
+
+  - name: Deploy Docker Container
+    command: docker run -itd -p 8081:8081 --name my-banking krishna21290/banking-app:1.0
